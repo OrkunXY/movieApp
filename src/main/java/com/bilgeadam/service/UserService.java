@@ -116,6 +116,26 @@ public class UserService implements ICrudService<User, Integer> {
 
         return IUserMapper.INSTANCE.fromLoginResponseDto(optionalUser.get());
     }
+    public List<User> getUsersOrderedByName(String name) {
+        return userRepository.findByNameOrderByNameAsc(name);
+    }
+    public boolean existsByName(String name) {
+        return userRepository.existsByName(name);
+    }
+    public List<User> searchByName(String keyword) {
+        return userRepository.findByNameContainingIgnoreCase(keyword);
+    }
+    public List<User> findAllByNameOrderByNameAsc(String name) {
+        return userRepository.findAllByNameOrderByNameAsc(name);
+    }
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
+
+
+
 
 
 

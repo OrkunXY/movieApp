@@ -55,4 +55,10 @@ public class UserController {
     public ResponseEntity<UserRegisterRequestDto> registerDto(@RequestBody UserRegisterRequestDto dto){
         return ResponseEntity.ok(userService.registerDto(dto));
     }
+    @GetMapping("/find-by-name")
+    public ResponseEntity<List<User>> findByName(@RequestParam String name){
+        List<User> users = userService.getUsersOrderedByName(name);
+        return ResponseEntity.ok(users);
+    }
+
 }
