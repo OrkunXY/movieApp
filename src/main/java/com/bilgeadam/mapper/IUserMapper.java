@@ -1,19 +1,24 @@
 package com.bilgeadam.mapper;
 
 
+import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import com.bilgeadam.dto.request.UserRegisterRequestDto;
 import com.bilgeadam.dto.response.UserLoginResponseDto;
 
-@Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface IUserMapper {
-
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
 
-    UserLoginResponseDto fromLoginResponseDto(final User dto);
-    User fromUserRegisterRequestDto(final UserRegisterRequestDto dto);
+    User toUserRegisterDto(final UserRegisterRequestDto dto);
 
+    UserLoginResponseDto toUserLoginDto(final User user);
+
+    //@MappedTarget --> sizin dto'nuz ile entity'niz arasında bir mappleme yaparak veri güvenliği sağlar
+    //ve veri kaybını önler
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateUserFromDto(UserUpdateRequestDto dto, @MappingTarget User user);
 }

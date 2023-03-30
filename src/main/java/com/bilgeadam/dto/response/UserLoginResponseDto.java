@@ -13,8 +13,7 @@ import javax.validation.constraints.Email;
 @AllArgsConstructor
 public class UserLoginResponseDto {
 
-    private String email;
-
-
+    String email;
+    String password;
 }
 
