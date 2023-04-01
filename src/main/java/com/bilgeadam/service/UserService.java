@@ -225,4 +225,58 @@ public class UserService implements ICrudService<User, Integer> {
     public List<User> findByEmailEndsWithIgnoreCase(String email){
         return userRepository.findByEmailEndsWithIgnoreCase(email);
     }
+    public List<User> orderByUser(){
+        List<User> userList = userRepository.findAllByOrderByName();
+        if(userList.isEmpty()){
+            throw new NullPointerException("Kullanıcı Listesi Boş");
+        }
+        return userList;
+    }
+    public String findByName(String name){
+        if(userRepository.findByName(name).isEmpty()){
+            throw new NullPointerException(name +" isimli bir isim bulunmamaktadır.");
+        }
+        return name + " username'li bir kullanıcı bulunmaktadır.";
+    }
+
+    public List<User> findByNameContainingIgnoreCase(String name){
+        List<User> userList = userRepository.findByNameContainingIgnoreCase(name);
+        if(userList.isEmpty()){
+            throw new NullPointerException(name +" isimli bir isim bulunmamaktadır.");
+        }
+        return userList;
+    }
+    public Boolean existsAllByNameIgnoreCase(String name){
+        return userRepository.existsAllByNameIgnoreCase(name);
+    }
+
+    public User findAllByEmailIgnoreCase(String email){
+        Optional<User> optionalUser = userRepository.findAllByEmailIgnoreCase(email);
+        if(optionalUser.isEmpty()){
+            throw new NullPointerException(email + " mailli bir kayıt bulunmamaktadır.");
+        }
+        return optionalUser.get();
+    }
+    //passwordGreaterThan JPQL
+    public List<User> findAllPasswordGreaterThanJpql(Integer value){
+        List<User> userList = userRepository.findAllPasswordGreaterThanJpql(value);
+        if(userList.isEmpty()){
+            throw new NotFoundException("Böyle bir kullanıcı yoktur.");
+        }
+        return userList;
+    }
+    public List<User> findAllPasswordGreaterThanNative(Integer value){
+        List<User> userList = userRepository.findAllPasswordGreaterThanNative(value);
+        if(userList.isEmpty()){
+            throw new NotFoundException("Böyle bir kullanıcı yoktur.");
+        }
+        return userList;
+    }
+    public List<User> findAllByEmailEndsWith(String value){
+        List<User> userList = userRepository.findAllByEmailEndsWithIgnoreCase(value);
+        if(userList.isEmpty()){
+            throw new NotFoundException("Böyle bir kullanıcı yoktur.");
+        }
+        return userList;
+    }
 }

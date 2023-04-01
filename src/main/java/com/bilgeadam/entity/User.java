@@ -39,16 +39,16 @@ public class User {
     private String password;
 
 
-    @ElementCollection
+    @ElementCollection//m2m
     private List<Integer>genreId;
 
-    @ElementCollection
+    @ElementCollection//m2m
     private List<Integer>movieId;
 
-    @ElementCollection
+    @ElementCollection//12m
     private List<Integer> commentId;
 
-    @Enumerated(EnumType.STRING)//enum ı string olarak kullandık.
+    @Enumerated(EnumType.STRING)//Enum değer database'e gönderilirken ve çekilirken STRING formatında olur.
     @Builder.Default // bir property default degerini alir.
     private EStatus status= EStatus.PENDING;
 

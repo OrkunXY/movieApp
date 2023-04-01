@@ -31,6 +31,16 @@ public class EndPointList {
     public static final String PASSLTHAN= "/pass-longer-than2";
     public static final String PASSLTHAN2= "/pass-longer-than2";
     public static final String FINDBYEMAILENDSWITH= "/find-by-email-ends-with";
+    public static final String ORDER_BY_USER="/order-by-user";
+    public static final String FIND_BY_NAME="/find-by-name";
+    public static final String FIND_BY_NAME_CONTAINING="/find-by-name-containing";
+    public static final String EXISTS_ALL_BY_NAME="/exits-all-by-name";
+    public static final String FIND_ALL_BY_EMAIL="/find-all-by-email";
+    public static final String FIND_PASSWORD_GREATERTHAN_JQSQL="/find-password-greaterthan-jpql";
+    public static final String FIND_PASSWORD_GREATERTHAN_NATIVE="/find-password-greaterthan-native";
+    public static final String FIND_EMAIL_ENDSWITH="/find-email-endswith";
+
+
 
 
 

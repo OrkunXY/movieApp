@@ -13,29 +13,20 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
-    Optional<User> findByEmailAndPassword(String email, String password);
-
-    /**
-     * önce büyük sonra küçük harfler sıralanıyor, kontrol edilecek
-     */
     List<User> findAllByOrderByName();
-
-    List<User> findAllByNameContainsIgnoreCase(String value);
-
-    boolean existsByNameIgnoreCase(String value);
-
-    List<User> findByEmailIgnoreCase(String email);
-
+    List<User> findByName(String name);
+    //Kullanıcının isim sorgulaması için girdiği harf veya kelimeye göre veritabanında sorgu yapan bir metot yazınız.
+    boolean existsAllByNameIgnoreCase(String name); //eklenecek
+    List<User> findByNameContainingIgnoreCase (String name);
+    //Kullanıcının girdiği email'e göre veritabanında sorgu yapan bir metot yazınız.
+    Optional<User> findAllByEmailIgnoreCase (String email);
     Optional<User> findByEmailEqualsIgnoreCase(String email);
-
-    //NativeQuery
-    @Query(value = "select * from users as u where length(u.password)>:x", nativeQuery = true)
-    List<User> passwordLongerThan(@Param("x") int num);
-
-    //JPQL
-    @Query("select u from User u where length(u.password)>?1")
-    List<User> passwordLongerThan2(int num);
-
-    List<User> findByEmailEndsWithIgnoreCase(String email);
+    //Passwordunun uzunluğu belirlediğimiz sayıdan buyuk olanlar (2 tür Query yazılacak)
+    @Query("select u from User u where LENGTH( u.password) > ?1")
+    List<User> findAllPasswordGreaterThanJpql(Integer value);
+    @Query(value = "select * from User u where LENGTH(u.password = :parampassword) > ?1",nativeQuery = true)
+    List<User> findAllPasswordGreaterThanNative(
+            @Param("parampassword") Integer value);
+    List<User> findAllByEmailEndsWithIgnoreCase(String value);
 
 }
