@@ -144,7 +144,7 @@ public class UserService implements ICrudService<User, Integer> {
         userRepository.save(user);
         return dto;
     }
-    //basic login
+    /*//basic login
     public String login(String email, String password){
         Optional<User> optionalUser = userRepository.findByEmailAndPassword(email, password);
         if (optionalUser.isEmpty()){
@@ -187,14 +187,14 @@ public class UserService implements ICrudService<User, Integer> {
             hm.put(ECustomEnum.message, "Giriş başarılı");
             return new ResponseEntity(hm, HttpStatus.OK);
         }
-    }
+    }*/
 
     //kullanıcıları ismine göre sırala
     public List<User> findByOrderByName(){
         return userRepository.findAllByOrderByName();
     }
 
-    public List<User> findAllByNameContainsIgnoreCase(String value){
+/*    public List<User> findAllByNameContainsIgnoreCase(String value){
         List<User> users = userRepository.findAllByNameContainsIgnoreCase(value);
         if (users.isEmpty()){
             throw new NotFoundException("Liste boş");
@@ -224,7 +224,7 @@ public class UserService implements ICrudService<User, Integer> {
 
     public List<User> findByEmailEndsWithIgnoreCase(String email){
         return userRepository.findByEmailEndsWithIgnoreCase(email);
-    }
+    }*/
     public List<User> orderByUser(){
         List<User> userList = userRepository.findAllByOrderByName();
         if(userList.isEmpty()){
