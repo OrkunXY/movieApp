@@ -1,6 +1,5 @@
 package com.bilgeadam.service;
 import com.bilgeadam.dto.request.UserRegisterRequestDto;
-import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.dto.response.UserLoginResponseDto;
 import com.bilgeadam.entity.User;
 
@@ -39,26 +38,6 @@ public class UserService implements ICrudService<User, Integer> {
     @Override
     public User update(User user) {
         return null;
-    }
-
-    //update-dto --> bu şekilde kullanılmamalıdır
-    public User updateDto(UserUpdateRequestDto dto){
-        Optional<User> optionalUser = userRepository.findById(dto.getId());
-        if (optionalUser.isPresent()){
-            optionalUser.get().setName(dto.getName());
-            optionalUser.get().setSurname(dto.getSurname());
-            optionalUser.get().setEmail(dto.getEmail());
-            optionalUser.get().setPhone(dto.getPhone());
-            return userRepository.save(optionalUser.get());
-        }else {
-            throw new NotFoundException("Kullanıcı bulunamadı");
-        }
-    }
-
-    public User updateMapper(UserUpdateRequestDto dto){
-        Optional<User> user = userRepository.findById(dto.getId());
-        IUserMapper.INSTANCE.updateUserFromDto(dto, user.get());
-        return userRepository.save(user.get());
     }
 
     //Sadece admin rolüne sahip kişiler bu işlemi gerçekleştirebilir.
@@ -144,7 +123,7 @@ public class UserService implements ICrudService<User, Integer> {
         userRepository.save(user);
         return dto;
     }
-    /*//basic login
+    //basic login
     public String login(String email, String password){
         Optional<User> optionalUser = userRepository.findByEmailAndPassword(email, password);
         if (optionalUser.isEmpty()){
@@ -187,14 +166,14 @@ public class UserService implements ICrudService<User, Integer> {
             hm.put(ECustomEnum.message, "Giriş başarılı");
             return new ResponseEntity(hm, HttpStatus.OK);
         }
-    }*/
+    }
 
     //kullanıcıları ismine göre sırala
     public List<User> findByOrderByName(){
         return userRepository.findAllByOrderByName();
     }
 
-/*    public List<User> findAllByNameContainsIgnoreCase(String value){
+    public List<User> findAllByNameContainsIgnoreCase(String value){
         List<User> users = userRepository.findAllByNameContainsIgnoreCase(value);
         if (users.isEmpty()){
             throw new NotFoundException("Liste boş");
@@ -212,71 +191,5 @@ public class UserService implements ICrudService<User, Integer> {
             throw new NotFoundException("Liste boş");
         }
         return users;
-    }
-
-    public List<User> passwordLongerThan(int num){
-        return userRepository.passwordLongerThan(num);
-    }
-
-    public List<User> passwordLongerThan2(int num){
-        return userRepository.passwordLongerThan2(num);
-    }
-
-    public List<User> findByEmailEndsWithIgnoreCase(String email){
-        return userRepository.findByEmailEndsWithIgnoreCase(email);
-    }*/
-    public List<User> orderByUser(){
-        List<User> userList = userRepository.findAllByOrderByName();
-        if(userList.isEmpty()){
-            throw new NullPointerException("Kullanıcı Listesi Boş");
-        }
-        return userList;
-    }
-    public String findByName(String name){
-        if(userRepository.findByName(name).isEmpty()){
-            throw new NullPointerException(name +" isimli bir isim bulunmamaktadır.");
-        }
-        return name + " username'li bir kullanıcı bulunmaktadır.";
-    }
-
-    public List<User> findByNameContainingIgnoreCase(String name){
-        List<User> userList = userRepository.findByNameContainingIgnoreCase(name);
-        if(userList.isEmpty()){
-            throw new NullPointerException(name +" isimli bir isim bulunmamaktadır.");
-        }
-        return userList;
-    }
-    public Boolean existsAllByNameIgnoreCase(String name){
-        return userRepository.existsAllByNameIgnoreCase(name);
-    }
-
-    public User findAllByEmailIgnoreCase(String email){
-        Optional<User> optionalUser = userRepository.findAllByEmailIgnoreCase(email);
-        if(optionalUser.isEmpty()){
-            throw new NullPointerException(email + " mailli bir kayıt bulunmamaktadır.");
-        }
-        return optionalUser.get();
-    }
-    //passwordGreaterThan JPQL
-    public List<User> findAllPasswordGreaterThanJpql(Integer value){
-        List<User> userList = userRepository.findAllPasswordGreaterThanJpql(value);
-        if(userList.isEmpty()){
-            throw new NotFoundException("Böyle bir kullanıcı yoktur.");
-        }
-        return userList;
-    }
-    public List<User> findAllPasswordGreaterThanNative(Integer value){
-        List<User> userList = userRepository.findAllPasswordGreaterThanNative(value);
-        if(userList.isEmpty()){
-            throw new NotFoundException("Böyle bir kullanıcı yoktur.");
-        }
-        return userList;
-    }
-    public List<User> findAllByEmailEndsWith(String value){
-        List<User> userList = userRepository.findAllByEmailEndsWithIgnoreCase(value);
-        if(userList.isEmpty()){
-            throw new NotFoundException("Böyle bir kullanıcı yoktur.");
-        }
-        return userList;
     }
 }
