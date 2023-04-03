@@ -27,12 +27,10 @@ public class Movie implements Serializable {
     private String summary;
     private LocalDate premiered;
     private String url;
-
-    @ElementCollection
-    private List<Integer> commentId;
-
-    @ElementCollection
+    @ElementCollection //ManyToMany
     private List<Integer> genreId;
+    @ElementCollection //OneToMany
+    private List<Integer> commentId;
 }
 
 

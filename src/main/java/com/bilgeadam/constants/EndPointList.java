@@ -28,7 +28,7 @@ public class EndPointList {
     public static final String FINDBYNAMECONTAINS= "/find-by-name-contains";
     public static final String EXISTNAME= "/exist-name";
     public static final String FINDBYMAIL= "/find-by-email";
-    public static final String PASSLTHAN= "/pass-longer-than2";
+    public static final String PASSLTHAN= "/pass-longer-than";
     public static final String PASSLTHAN2= "/pass-longer-than2";
     public static final String FINDBYEMAILENDSWITH= "/find-by-email-ends-with";
     public static final String ORDER_BY_USER="/order-by-user";
