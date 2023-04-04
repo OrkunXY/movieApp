@@ -1,5 +1,6 @@
 package com.bilgeadam.service;
 import com.bilgeadam.dto.request.UserRegisterRequestDto;
+import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.dto.response.UserLoginResponseDto;
 import com.bilgeadam.entity.User;
 
@@ -32,12 +33,29 @@ public class UserService implements ICrudService<User, Integer> {
         return null;
     }
 
-    /**
-     * !!dto ile yapılacak
-     */
     @Override
     public User update(User user) {
         return null;
+    }
+
+    //update-dto --> bu şekilde kullanılmamalıdır
+    public User updateDto(UserUpdateRequestDto dto){
+        Optional<User> optionalUser = userRepository.findById(dto.getId());
+        if (optionalUser.isPresent()){
+            optionalUser.get().setName(dto.getName());
+            optionalUser.get().setSurname(dto.getSurname());
+            optionalUser.get().setEmail(dto.getEmail());
+            optionalUser.get().setPhone(dto.getPhone());
+            return userRepository.save(optionalUser.get());
+        }else {
+            throw new NotFoundException("Kullanıcı bulunamadı");
+        }
+    }
+
+    public User updateMapper(UserUpdateRequestDto dto){
+        Optional<User> user = userRepository.findById(dto.getId());
+        IUserMapper.INSTANCE.updateUserFromDto(dto, user.get());
+        return userRepository.save(user.get());
     }
 
     //Sadece admin rolüne sahip kişiler bu işlemi gerçekleştirebilir.
@@ -109,6 +127,10 @@ public class UserService implements ICrudService<User, Integer> {
     //mapper-register
     //Aynı email ile ikinci defa kayıt işlemi yapılmamalıdır. Eğer kayıt olan kişi superadmin@mail.com ise
     //UserType=ADMIN ve Status=ACTIVE olmalıdır.
+
+    //metot imzası nedir --> bir metodun dönüş tipini ve parametresini belirtir
+    //sorulduğunda --> "UserRegisterRequestDto dönüş tipinde ve UserRegisterRequestDto tipinde dto parametresi alan bir metottur"
+    //demelisiniz
     public UserRegisterRequestDto registerMapper(UserRegisterRequestDto dto) {
         User user = IUserMapper.INSTANCE.toUserRegisterDto(dto);
         if (userRepository.findByEmailEqualsIgnoreCase(dto.getEmail()).isPresent()){
@@ -154,7 +176,7 @@ public class UserService implements ICrudService<User, Integer> {
 
     //custom login --> Arda
     public ResponseEntity customLogin(UserLoginResponseDto dto){
-        Map<ECustomEnum, Object> hm = new HashMap<>();
+        Map<Object, Object> hm = new HashMap<>();
         Optional<User> optionalUser = userRepository.findByEmailAndPassword(dto.getEmail(), dto.getPassword());
         if (optionalUser.isEmpty()){
             hm.put(ECustomEnum.status, false);
@@ -191,5 +213,17 @@ public class UserService implements ICrudService<User, Integer> {
             throw new NotFoundException("Liste boş");
         }
         return users;
+    }
+
+    public List<User> passwordLongerThan(int num){
+        return userRepository.passwordLongerThan(num);
+    }
+
+    public List<User> passwordLongerThan2(int num){
+        return userRepository.passwordLongerThan2(num);
+    }
+
+    public List<User> findByEmailEndsWithIgnoreCase(String email){
+        return userRepository.findByEmailEndsWithIgnoreCase(email);
     }
 }

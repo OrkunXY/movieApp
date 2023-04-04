@@ -67,6 +67,9 @@ public class MovieService implements ICrudService<Movie, Integer> {
     public List<Movie> findByPremieredBefore(LocalDate premiered){
         return movieRepository.findByPremieredBefore(premiered);
     }
+    public Object countByIdenticalRating(double rating){
+        return movieRepository.countByIdenticalRating(rating);
+    }
 
 
 

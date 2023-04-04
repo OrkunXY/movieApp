@@ -1,6 +1,7 @@
 package com.bilgeadam.controller;
 
 import com.bilgeadam.dto.request.UserRegisterRequestDto;
+import com.bilgeadam.dto.request.UserUpdateRequestDto;
 import com.bilgeadam.dto.response.UserLoginResponseDto;
 import com.bilgeadam.entity.User;
 import com.bilgeadam.service.UserService;
@@ -32,7 +33,6 @@ public class UserController {
     public ResponseEntity<UserRegisterRequestDto> registerMapper(@RequestBody @Valid UserRegisterRequestDto dto){
         return ResponseEntity.ok(userService.registerMapper(dto));
     }
-
     @PostMapping("/login")
     public ResponseEntity<String> login(String email, String password){
         return ResponseEntity.ok(userService.login(email, password));
@@ -60,8 +60,18 @@ public class UserController {
     public ResponseEntity<Optional<User>> findById(Integer id){
         return ResponseEntity.ok(userService.findById(id));
     }
-    @DeleteMapping("/delete")
-    public ResponseEntity<User> delete(Integer id){
+
+    @PutMapping("/update-dto")
+    public ResponseEntity<User> updateDto(UserUpdateRequestDto dto){
+        return ResponseEntity.ok(userService.updateDto(dto));
+    }
+
+    @PutMapping("/update-mapper")
+    public ResponseEntity<User> updateMapper(UserUpdateRequestDto dto){
+        return ResponseEntity.ok(userService.updateMapper(dto));
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<User> delete(@PathVariable Integer id){
         return ResponseEntity.ok(userService.delete(id));
     }
 
@@ -83,5 +93,20 @@ public class UserController {
     @GetMapping("/find-by-email")
     public ResponseEntity<List<User>> findByEmailIgnoreCase(String email){
         return ResponseEntity.ok(userService.findByEmailIgnoreCase(email));
+    }
+
+    @GetMapping("/pass-longer-than")
+    public ResponseEntity<List<User>> passwordLongerThan(int num){
+        return ResponseEntity.ok(userService.passwordLongerThan(num));
+    }
+
+    @GetMapping("/pass-longer-than2")
+    public ResponseEntity<List<User>> passwordLongerThan2(int num){
+        return ResponseEntity.ok(userService.passwordLongerThan2(num));
+    }
+
+    @GetMapping("/find-by-email-ends-with")
+    public ResponseEntity<List<User>> findByEmailEndsWithIgnoreCase(String email){
+        return ResponseEntity.ok(userService.findByEmailEndsWithIgnoreCase(email));
     }
 }

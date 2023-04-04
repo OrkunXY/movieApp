@@ -34,4 +34,15 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     List<User> findByEmailIgnoreCase(String email);
 
     Optional<User> findByEmailEqualsIgnoreCase(String email);
+
+    //NativeQuery
+    @Query(value = "select * from users as u where length(u.password)>:x", nativeQuery = true)
+    List<User> passwordLongerThan(@Param("x") int num);
+
+    //JPQL
+    @Query("select u from User u where length(u.password)>?1")
+    List<User> passwordLongerThan2(int num);
+
+    List<User> findByEmailEndsWithIgnoreCase(String email);
+
 }
